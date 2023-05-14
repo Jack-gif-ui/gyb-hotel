@@ -1,0 +1,16 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(200, 235, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .content{
+    width: 500px;
+    border: 1px solid rgb(153, 2, 194);
+    h2{
+        text-align: center;
+        margin-bottom: 12px;
+    }
+  }
+}
