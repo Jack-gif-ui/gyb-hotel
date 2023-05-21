@@ -71,7 +71,7 @@ export default function AddRole({
         placement="right"
         onClose={onClose}
         open={open}
-        width={500}
+        width={450}
       >
         <Form
           form={form}

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import "./Login.scss";
-import { login } from "../../api/adminApi";
+import { login, reqUserInfo } from "../../api/adminApi";
 import MyNotification from "../../components/MyNotification/MyNotification";
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // 判断是否已经登录
     if (localStorage.getItem("token")) {
       navigate("/home");
     }
-  },[navigate]);
+  }, [navigate]);
 
   const [form] = Form.useForm();
   // 通知框状态
@@ -24,6 +26,10 @@ export default function Login() {
     const { message, success } = await login(values);
     // 判断是否登录成功
     if (success) {
+      let admin = await reqUserInfo({ loginId: values.loginId });
+      //console.log('$$',admin);
+      dispatch({ type: "setAdmin", payload: admin });
+
       setNotiMsg({ type: "success", description: message });
       navigate("/home");
     } else {

@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { store } from "./redux/index";
+import { Provider } from "react-redux";
 
 import "./index.css";
 import { ConfigProvider } from "antd";
@@ -14,6 +16,8 @@ root.render(
       },
     }}
   >
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </ConfigProvider>
 );

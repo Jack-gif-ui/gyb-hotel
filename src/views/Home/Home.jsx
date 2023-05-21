@@ -63,9 +63,9 @@ export default function Home() {
     },
   ];
   // 右侧导航回调
-  const [current, setCurrent] = useState("mine");
+  const [current, setCurrent] = useState("home");
   const onClick = (e) => {
-    // console.log("click ", e);
+    console.log("click ", e);
     setCurrent(e.key);
     // 判断点击的菜单项是哪一个
     switch (e.key) {
@@ -79,7 +79,11 @@ export default function Home() {
       // 用户管理
       case "user":
         navigate("/home/user");
-
+        break;
+      //个人中心
+      case "my":
+        navigate("/home/mine");
+        break;
       default:
         break;
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Upload, message } from "antd";
 
@@ -52,6 +52,13 @@ export default function UploadImg({ form }) {
       </div>
     </div>
   );
+  // 检测photo响应地址变化，加工后图片写活
+  useEffect(() => {
+    let photoUrl = form.getFieldValue("photo");
+    if (photoUrl) {
+      setImageUrl(photoUrl)
+    }
+  }, [form.getFieldValue("photo")]);
   return (
     <Upload
       name="photo"

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Drawer, Form, Input, Select } from "antd";
 import MyNotification from "../../components/MyNotification/MyNotification";
-import { reqUserList, addUserList } from "../../api/adminApi";
+import { addUserList, reqUserInfo, updateUserInfo } from "../../api/adminApi";
 import { reqroleList } from "../../api/roleApi";
-import UploadImg from './UploadImg'
-
-
+import UploadImg from "./UploadImg";
 
 export default function AddUser({
   open,
@@ -36,14 +34,14 @@ export default function AddUser({
   useEffect(() => {
     // 加载用户列表
     loadRoleList();
-    // if (roleId !== 0) {
-    //   // 根据roleId发送请求
-    //   reqRoleInfo({ roleId }).then((data) => {
-    //     console.log("addrole", data);
-    //     form.setFieldsValue(data);
-    //   });
-    // }
-  }, []);
+    if (loginId !== 0) {
+      // 根据loginId发送请求，获取一个账户信息
+      reqUserInfo({ loginId }).then((data) => {
+        console.log("addUser", data);
+        form.setFieldsValue(data);
+      });
+    }
+  }, [loginId]);
   // 清空表单的方法
   const onReset = () => {
     form.resetFields();
@@ -59,18 +57,18 @@ export default function AddUser({
   // 抽屉内部表单的回调
   const onFinish = (values) => {
     console.log(values);
-    if (!loginId) {
-      //   updateRoleName(values).then(({ success, message }) => {
-      //     if (success) {
-      //       setNotiMsg({ type: "success", description: message });
-      //       // 重新获取表格数据
-      //       loadList();
-      //       onReset();
-      //     } else {
-      //       setNotiMsg({ type: "error", description: message });
-      //     }
-      //   });
-      // }else{
+    if (loginId) {
+      updateUserInfo(values).then(({ success, message }) => {
+        if (success) {
+          setNotiMsg({ type: "success", description: message });
+          // 重新获取表格数据
+          loadList();
+          onReset();
+        } else {
+          setNotiMsg({ type: "error", description: message });
+        }
+      });
+    } else {
       addUserList(values).then(({ success, message }) => {
         if (success) {
           setNotiMsg({ type: "success", description: message });
@@ -91,7 +89,7 @@ export default function AddUser({
         placement="right"
         onClose={onClose}
         open={open}
-        width={500}
+        width={450}
       >
         <Form
           form={form}
@@ -121,6 +119,7 @@ export default function AddUser({
                 message: "请输入账号编号",
               },
             ]}
+            hidden={loginId}
           >
             <Input />
           </Form.Item>
@@ -133,6 +132,7 @@ export default function AddUser({
                 message: "请输入密码",
               },
             ]}
+            hidden={loginId}
           >
             <Input />
           </Form.Item>
@@ -170,7 +170,7 @@ export default function AddUser({
               },
             ]}
           >
-           <UploadImg form={form}/>
+            <UploadImg form={form} />
           </Form.Item>
           <Form.Item
             label="角色"
